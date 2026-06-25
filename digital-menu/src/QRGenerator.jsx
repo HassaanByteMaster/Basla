@@ -19,9 +19,9 @@ const loadHtml2Pdf = () => {
 };
 
 export default function QRGenerator() {
+  const [genMode, setGenMode] = useState('tables'); // 'tables' or 'general'
   const [tableCount, setTableCount] = useState(12);
   const [baseUrl, setBaseUrl] = useState('');
-  const [qrType, setQrType] = useState('tables'); // 'tables' or 'general'
   
   // PDF download loading state
   const [isDownloading, setIsDownloading] = useState(false);
@@ -64,7 +64,8 @@ export default function QRGenerator() {
       // Temporarily transform to vertical PDF layout
       gridElement.classList.add('qr-grid--pdf');
 
-      const fileName = `qr-codes-${(BRAND_CONFIG.nameEn || 'basla').toLowerCase().replace(/\s+/g, '-')}.pdf`;
+      const prefix = genMode === 'general' ? 'general-menu' : 'table-qrs';
+      const fileName = `${prefix}-${(BRAND_CONFIG.nameEn || 'basla').toLowerCase().replace(/\s+/g, '-')}.pdf`;
       const opt = {
         margin:       10,
         filename:     fileName,
@@ -93,7 +94,7 @@ export default function QRGenerator() {
   };
 
   const getQRUrl = (tableNum) => {
-    const url = qrType === 'general' ? baseUrl : `${baseUrl}?table=${tableNum}`;
+    const url = tableNum ? `${baseUrl}?table=${tableNum}` : baseUrl;
     const qrColor = (BRAND_CONFIG.primaryColor || '#F5890A').replace('#', '');
     return `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(url)}&color=${qrColor}&bgcolor=ffffff&qzone=1`;
   };
@@ -172,34 +173,57 @@ export default function QRGenerator() {
             <h2>توليد أكواد QR لـ {BRAND_CONFIG.name}</h2>
           </div>
           <p className="qr-controls__desc">
-            اختر نوع الكود الذي تريد توليده (أكواد مخصصة للطاولات أو كود عام للمنيو بدون طاولة) ثم حمّل الكروت كملف PDF ملون عالي الجودة للطباعة فوراً.
+            اختر نوع الباركود الذي ترغب في توليده. يمكنك توليد أكواد مخصصة لكل طاولة تتيح للعملاء الطلب مباشرة، أو كود عام للمنيو يعرض الوجبات فقط للقراءة.
           </p>
           
           <div className="qr-form">
             <div className="qr-field">
-              <label htmlFor="type-select">نوع الكود:</label>
-              <select
-                id="type-select"
-                value={qrType}
-                onChange={(e) => setQrType(e.target.value)}
-                style={{
-                  padding: '12px 16px',
-                  background: 'rgba(0, 0, 0, 0.25)',
-                  border: '1px solid var(--border, rgba(255, 255, 255, 0.08))',
-                  borderRadius: '12px',
-                  color: '#fff',
-                  fontFamily: 'inherit',
-                  fontSize: '0.95rem',
-                  outline: 'none',
-                  cursor: 'pointer',
-                }}
-              >
-                <option value="tables" style={{ background: '#111' }}>أكواد الطاولات</option>
-                <option value="general" style={{ background: '#111' }}>كود عام للمنيو (بدون طاولة)</option>
-              </select>
+              <label>نوع الباركود:</label>
+              <div style={{ display: 'flex', gap: '10px', marginTop: '5px' }}>
+                <button
+                  type="button"
+                  style={{
+                    flex: 1,
+                    padding: '10px 12px',
+                    borderRadius: '12px',
+                    border: '1px solid',
+                    borderColor: genMode === 'tables' ? 'var(--primary, #F5890A)' : 'rgba(255,255,255,0.08)',
+                    background: genMode === 'tables' ? 'rgba(245, 137, 10, 0.12)' : 'rgba(0,0,0,0.2)',
+                    color: genMode === 'tables' ? 'var(--primary, #F5890A)' : '#aaa',
+                    fontFamily: 'inherit',
+                    fontSize: '0.85rem',
+                    fontWeight: '700',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease'
+                  }}
+                  onClick={() => setGenMode('tables')}
+                >
+                  أكواد الطاولات (طلب مباشر)
+                </button>
+                <button
+                  type="button"
+                  style={{
+                    flex: 1,
+                    padding: '10px 12px',
+                    borderRadius: '12px',
+                    border: '1px solid',
+                    borderColor: genMode === 'general' ? 'var(--primary, #F5890A)' : 'rgba(255,255,255,0.08)',
+                    background: genMode === 'general' ? 'rgba(245, 137, 10, 0.12)' : 'rgba(0,0,0,0.2)',
+                    color: genMode === 'general' ? 'var(--primary, #F5890A)' : '#aaa',
+                    fontFamily: 'inherit',
+                    fontSize: '0.85rem',
+                    fontWeight: '700',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease'
+                  }}
+                  onClick={() => setGenMode('general')}
+                >
+                  منيو عام (عرض فقط)
+                </button>
+              </div>
             </div>
 
-            {qrType === 'tables' && (
+            {genMode === 'tables' && (
               <div className="qr-field">
                 <label htmlFor="table-input">عدد الطاولات:</label>
                 <input 
@@ -246,64 +270,99 @@ export default function QRGenerator() {
 
         {/* Printable Grid */}
         <section className="qr-grid">
-          {Array.from({ length: qrType === 'general' ? 1 : (isNaN(tableCount) ? 12 : Math.max(1, tableCount)) }, (_, idx) => {
-            const tableNum = idx + 1;
-            
-            return (
-              <div key={tableNum} className="qr-card">
-                <div className="qr-card__inner">
-                  {/* Brand Header */}
-                  <div className="qr-card__brand">
-                    {!logoFailed ? (
-                      <img 
-                        src={BRAND_CONFIG.logo} 
-                        alt={BRAND_CONFIG.nameEn} 
-                        className="qr-card__logo"
-                        onError={() => setLogoFailed(true)}
-                      />
-                    ) : (
-                      <span className="qr-card__emoji-logo">🧅</span>
-                    )}
-                    <h3>{BRAND_CONFIG.name}</h3>
-                    <p className="qr-card__tagline">{BRAND_CONFIG.tagline}</p>
-                  </div>
-                  
-                  {/* QR Frame */}
-                  <div className="qr-card__code-wrap">
+          {genMode === 'general' ? (
+            <div className="qr-card">
+              <div className="qr-card__inner">
+                {/* Brand Header */}
+                <div className="qr-card__brand">
+                  {!logoFailed ? (
                     <img 
-                      src={getQRUrl(tableNum)} 
-                      alt={qrType === 'general' ? "General QR Code" : `Table ${tableNum} QR Code`} 
-                      className="qr-card__code-img"
-                      loading="lazy"
+                      src={BRAND_CONFIG.logo} 
+                      alt={BRAND_CONFIG.nameEn} 
+                      className="qr-card__logo"
+                      onError={() => setLogoFailed(true)}
                     />
-                  </div>
+                  ) : (
+                    <span className="qr-card__emoji-logo">🧅</span>
+                  )}
+                  <h3>{BRAND_CONFIG.name}</h3>
+                  <p className="qr-card__tagline">{BRAND_CONFIG.tagline}</p>
+                </div>
+                
+                {/* QR Frame */}
+                <div className="qr-card__code-wrap">
+                  <img 
+                    src={getQRUrl(null)} 
+                    alt="General Menu QR Code" 
+                    className="qr-card__code-img"
+                    loading="lazy"
+                  />
+                </div>
 
-                  {/* Table / General Label */}
-                  {qrType === 'tables' ? (
+                {/* Table Label */}
+                <div className="qr-card__table-num">
+                  <span>المنيو الإلكتروني</span>
+                  <strong style={{ fontSize: '1.25rem' }}>عرض فقط</strong>
+                </div>
+
+                {/* Call to Action */}
+                <div className="qr-card__footer">
+                  <h4 className="qr-card__welcome">أهلاً بك في {BRAND_CONFIG.name}</h4>
+                  <p className="qr-card__instruction">تفضّل بمسح الرمز السريع لتصفح قائمة المأكولات مباشرة من هاتفك</p>
+                  <div className="qr-card__deco-line">✦ ✦ ✦</div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            Array.from({ length: isNaN(tableCount) ? 12 : Math.max(1, tableCount) }, (_, idx) => {
+              const tableNum = idx + 1;
+              
+              return (
+                <div key={tableNum} className="qr-card">
+                  <div className="qr-card__inner">
+                    {/* Brand Header */}
+                    <div className="qr-card__brand">
+                      {!logoFailed ? (
+                        <img 
+                          src={BRAND_CONFIG.logo} 
+                          alt={BRAND_CONFIG.nameEn} 
+                          className="qr-card__logo"
+                          onError={() => setLogoFailed(true)}
+                        />
+                      ) : (
+                        <span className="qr-card__emoji-logo">🧅</span>
+                      )}
+                      <h3>{BRAND_CONFIG.name}</h3>
+                      <p className="qr-card__tagline">{BRAND_CONFIG.tagline}</p>
+                    </div>
+                    
+                    {/* QR Frame */}
+                    <div className="qr-card__code-wrap">
+                      <img 
+                        src={getQRUrl(tableNum)} 
+                        alt={`Table ${tableNum} QR Code`} 
+                        className="qr-card__code-img"
+                        loading="lazy"
+                      />
+                    </div>
+
+                    {/* Table Label */}
                     <div className="qr-card__table-num">
                       <span>طاولة رقم</span>
                       <strong>{tableNum}</strong>
                     </div>
-                  ) : (
-                    <div className="qr-card__table-num" style={{ background: 'linear-gradient(135deg, #1A1A1A, #333333)', border: '1.5px solid #E5BA73', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>
-                      <span style={{ fontSize: '0.85rem', fontWeight: '800', color: '#E5BA73' }}>المنيو الرقمي العام</span>
-                    </div>
-                  )}
 
-                  {/* Call to Action */}
-                  <div className="qr-card__footer">
-                    <h4 className="qr-card__welcome">أهلاً بك في {BRAND_CONFIG.name}</h4>
-                    <p className="qr-card__instruction">
-                      {qrType === 'general' 
-                        ? 'تفضّل بمسح الرمز السريع لتصفح قائمة المأكولات والطلبات مباشرة من هاتفك' 
-                        : 'تفضّل بمسح الرمز السريع لتصفح قائمة المأكولات وطلب وجبتك المفضلة مباشرة من طاولتك'}
-                    </p>
-                    <div className="qr-card__deco-line">✦ ✦ ✦</div>
+                    {/* Call to Action */}
+                    <div className="qr-card__footer">
+                      <h4 className="qr-card__welcome">أهلاً بك في {BRAND_CONFIG.name}</h4>
+                      <p className="qr-card__instruction">تفضّل بمسح الرمز السريع لتصفح قائمة المأكولات وطلب وجبتك المفضلة مباشرة من طاولتك</p>
+                      <div className="qr-card__deco-line">✦ ✦ ✦</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })
+          )}
         </section>
       </main>
     </div>
