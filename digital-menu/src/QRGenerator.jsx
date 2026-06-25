@@ -324,7 +324,7 @@ export default function QRGenerator() {
 
                 {/* Table Label */}
                 <div className="qr-card__table-num">
-                  <strong style={{ fontSize: '1.25rem' }}>Scan Now!</strong>
+                  <strong style={{ fontSize: '1.25rem' }}>!Scan Now</strong>
                 </div>
 
                 {/* Call to Action */}
