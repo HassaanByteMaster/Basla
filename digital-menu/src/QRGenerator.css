@@ -1,0 +1,597 @@
+/* ─────────────────── QR Generator Global Screen Styling ─────────────────── */
+.qr-gen-page {
+  min-height: 100vh;
+  background-color: var(--bg, #090909);
+  color: var(--text, #f3f4f6);
+  font-family: var(--font, 'Cairo', sans-serif);
+  padding-bottom: 60px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Wavy Background (matches site) */
+.qr-gen-page .wavy-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 550px;
+  background: radial-gradient(circle at 50% -20%, rgba(245, 137, 10, 0.15) 0%, rgba(9, 9, 9, 0) 80%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* 🔒 Password Lock Screen */
+.qr-lock-screen {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #090909;
+  font-family: var(--font, 'Cairo', sans-serif);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.qr-lock-screen .wavy-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 550px;
+  background: radial-gradient(circle at 50% -20%, rgba(245, 137, 10, 0.18) 0%, rgba(9, 9, 9, 0) 75%);
+  z-index: 0;
+}
+
+.qr-lock-card {
+  width: 100%;
+  max-width: 400px;
+  background: rgba(20, 20, 20, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 24px;
+  padding: 30px 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.03);
+  text-align: center;
+  z-index: 10;
+  position: relative;
+}
+
+.lock-icon-wrap {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(245, 137, 10, 0.12);
+  color: var(--primary, #F5890A);
+  display: grid;
+  place-items: center;
+  margin: 0 auto 16px;
+  border: 1px solid rgba(245, 137, 10, 0.25);
+  box-shadow: 0 0 20px rgba(245, 137, 10, 0.1);
+}
+
+.qr-lock-card__header h2 {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #ffffff;
+  margin: 0 0 8px 0;
+}
+
+.qr-lock-card__header p {
+  font-size: 0.85rem;
+  color: var(--text-muted, #9ca3af);
+  line-height: 1.5;
+  margin: 0 0 24px 0;
+}
+
+.qr-lock-card__header p strong {
+  color: var(--primary, #F5890A);
+}
+
+.lock-field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 16px;
+  text-align: right;
+}
+
+.lock-field label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-muted, #a3a3a3);
+}
+
+.lock-field input {
+  width: 100%;
+  padding: 13px 16px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  text-align: center;
+  letter-spacing: 4px;
+  transition: all 0.25s ease;
+}
+
+.lock-field input::placeholder {
+  letter-spacing: 0;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.lock-field input:focus {
+  border-color: var(--primary, #F5890A);
+  box-shadow: 0 0 0 3px rgba(245, 137, 10, 0.2);
+}
+
+.lock-error-msg {
+  font-size: 0.78rem;
+  color: #ef4444;
+  font-weight: 700;
+  margin: -6px 0 16px 0;
+  text-align: center;
+}
+
+.unlock-btn {
+  width: 100%;
+  padding: 13px 20px;
+  background: linear-gradient(135deg, var(--primary, #F5890A), var(--primary-dark, #C85000));
+  border: none;
+  color: #fff;
+  border-radius: 12px;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(245, 137, 10, 0.25);
+  margin-bottom: 12px;
+}
+
+.unlock-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(245, 137, 10, 0.35);
+}
+
+.lock-back-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted, #9ca3af);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.lock-back-btn:hover {
+  color: var(--primary, #F5890A);
+}
+
+/* ─────────────────── Header & Controls ─────────────────── */
+.qr-header {
+  background: rgba(14, 14, 14, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 12px 16px;
+}
+
+.qr-header__inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  color: var(--text, #f3f4f6);
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: inherit;
+}
+
+.back-btn:hover {
+  background: rgba(245, 137, 10, 0.08);
+  border-color: var(--primary, #F5890A);
+  color: var(--primary, #F5890A);
+  transform: translateX(2px);
+}
+
+.qr-header__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qr-header__brand h1 {
+  font-size: 1.15rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #fff, #a3a3a3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+}
+
+.logo-emoji {
+  font-size: 1.3rem;
+}
+
+.qr-container {
+  max-width: 1000px;
+  margin: 24px auto 0;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.qr-controls {
+  background: var(--bg-card, rgba(20, 20, 20, 0.6));
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 24px;
+  z-index: 2;
+  position: relative;
+}
+
+.qr-controls__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.qr-controls__title h2 {
+  font-size: 1.3rem;
+  font-weight: 900;
+  margin: 0;
+  color: #fff;
+}
+
+.icon-orange {
+  color: var(--primary, #F5890A);
+}
+
+.qr-controls__desc {
+  font-size: 0.9rem;
+  color: var(--text-muted, #9ca3af);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.qr-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  align-items: flex-end;
+}
+
+.qr-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.qr-field label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted, #9ca3af);
+}
+
+.qr-field input {
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: 12px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.qr-field input:focus {
+  border-color: var(--primary, #F5890A);
+  box-shadow: 0 0 0 3px rgba(245, 137, 10, 0.2);
+}
+
+.print-all-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, var(--primary, #F5890A), var(--primary-dark, #C85000));
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(245, 137, 10, 0.25);
+  height: 48px;
+}
+
+.print-all-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 137, 10, 0.35);
+}
+
+/* ─────────────────── Premium QR Card Designs ─────────────────── */
+.qr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.qr-card {
+  background: #FCFBF7; /* High-end luxury warm off-white card paper */
+  color: #1a1a1a;
+  border-radius: 24px;
+  border: 2px solid #E5BA73; /* Rich gold/bronze primary border */
+  padding: 24px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25), inset 0 0 0 5px rgba(229, 186, 115, 0.03);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  overflow: hidden;
+  position: relative;
+}
+
+.qr-card::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px dashed rgba(229, 186, 115, 0.45); /* Elegant inner dashed gold frame */
+  border-radius: 18px;
+  pointer-events: none;
+}
+
+.qr-card:hover {
+  transform: translateY(-4px);
+}
+
+.qr-card__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+}
+
+.qr-card__brand {
+  margin-bottom: 14px;
+  width: 100%;
+}
+
+.qr-card__logo {
+  height: 48px;
+  object-fit: contain;
+  margin: 4px auto 6px;
+  display: block;
+  border-radius: 10px;
+  border: 1px solid rgba(229, 186, 115, 0.2);
+}
+
+.qr-card__emoji-logo {
+  font-size: 2.2rem;
+  margin-bottom: 6px;
+}
+
+.qr-gen-page .qr-card__brand h3 {
+  font-size: 1.25rem;
+  font-weight: 900;
+  margin: 0 0 3px 0;
+  color: #1a1a1a;
+  letter-spacing: -0.2px;
+}
+
+.qr-card__tagline {
+  font-size: 0.74rem;
+  color: #6b7280;
+  margin: 0;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* QR Code Wrap */
+.qr-card__code-wrap {
+  background: #ffffff;
+  border: 1.5px solid #E5BA73; /* Match gold branding */
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 14px;
+  display: inline-block;
+  box-shadow: 0 6px 18px rgba(229, 186, 115, 0.06);
+  position: relative;
+}
+
+.qr-card__code-img {
+  width: 165px;
+  height: 165px;
+  display: block;
+}
+
+/* Table Label - Premium Pill Shape */
+.qr-card__table-num {
+  background: linear-gradient(135deg, var(--primary, #F5890A), var(--primary-dark, #C96D00));
+  color: #ffffff;
+  padding: 6px 20px;
+  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0 14px 0;
+  box-shadow: 0 4px 12px rgba(245, 137, 10, 0.2);
+}
+
+.qr-card__table-num span {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.qr-card__table-num strong {
+  font-size: 1.3rem;
+  font-weight: 900;
+  line-height: 1;
+  color: #ffffff;
+  margin: 0;
+}
+
+/* Card Footer */
+.qr-card__footer {
+  width: 100%;
+  border-top: 1px dashed rgba(229, 186, 115, 0.35);
+  padding-top: 12px;
+}
+
+.qr-card__footer p {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #4b5563;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.qr-card__welcome {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 4px 0;
+}
+
+.qr-card__instruction {
+  font-size: 0.74rem;
+  color: #4b5563;
+  line-height: 1.45;
+  margin: 0 0 5px 0;
+  font-weight: 500;
+}
+
+.qr-card__deco-line {
+  font-size: 0.65rem;
+  color: #E5BA73;
+  letter-spacing: 2px;
+  opacity: 0.85;
+}
+
+/* ─────────────────── PDF Export Layout Override ─────────────────── */
+.qr-grid--pdf {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 0 !important;
+  background: transparent !important;
+  width: 100% !important;
+}
+
+.qr-grid--pdf .qr-card {
+  page-break-after: always !important;
+  break-after: page !important;
+  background: #FCFBF7 !important;
+  border: 2px solid #E5BA73 !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
+  margin: 40px auto !important;
+  width: 290px !important;
+  height: auto !important; /* Allow dynamic height to fit content without clipping */
+  padding-bottom: 28px !important; /* Add neat bottom padding */
+  box-sizing: border-box !important;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+  transform: none !important;
+}
+
+.qr-grid--pdf .qr-card::before {
+  border: 1px dashed rgba(229, 186, 115, 0.45) !important;
+}
+
+.qr-grid--pdf .qr-card:last-child {
+  page-break-after: avoid !important;
+  break-after: avoid !important;
+}
+
+/* ─────────────────── PRINT OPTIMIZATIONS ─────────────────── */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    background-image: none !important;
+    color: #000000 !important;
+  }
+
+  .qr-gen-page, .qr-lock-screen {
+    background-color: #ffffff !important;
+    background-image: none !important;
+    padding: 0 !important;
+    min-height: auto !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .qr-container {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .qr-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0 !important;
+    background: transparent !important;
+  }
+
+  .qr-card {
+    page-break-after: always !important;
+    break-after: page !important;
+    background: #FCFBF7 !important; /* Keep the beautiful off-white card paper */
+    border: 2px solid #E5BA73 !important; /* Keep gold border */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
+    margin: 40px auto !important;
+    width: 290px !important;
+    height: auto !important; /* Allow dynamic height to fit content without clipping */
+    padding-bottom: 28px !important;
+    box-sizing: border-box !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .qr-card::before {
+    border: 1px dashed rgba(229, 186, 115, 0.45) !important;
+  }
+
+  .qr-card:last-child {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+}
