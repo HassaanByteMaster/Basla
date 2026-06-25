@@ -1,0 +1,165 @@
+/* Item Card — Bold Basla Brand Style */
+.card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  transition: transform var(--t-base) var(--ease-bounce),
+              border-color var(--t-base),
+              box-shadow var(--t-base);
+  cursor: pointer;
+  position: relative;
+}
+
+.card:hover {
+  border-color: var(--orange-border);
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(245,146,42,0.2);
+}
+
+/* Offer Badge */
+.offerBadge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 3;
+  background: var(--red);
+  color: #fff;
+  font-size: 0.58rem;
+  font-weight: 900;
+  padding: 3px 9px;
+  border-radius: var(--r-full);
+  box-shadow: 0 2px 8px rgba(239,68,68,0.5);
+  letter-spacing: 0.02em;
+}
+
+/* Image / Icon Area */
+.imgWrap {
+  height: 100px;
+  background: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  /* Orange corner accent */
+}
+
+.imgWrap::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--orange), transparent);
+  opacity: 0;
+  transition: opacity var(--t-base);
+}
+.card:hover .imgWrap::after { opacity: 1; }
+
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s var(--ease-out);
+}
+.card:hover .img { transform: scale(1.08); }
+
+.emoji {
+  font-size: 3rem;
+  transition: transform 0.35s var(--ease-bounce);
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+}
+.card:hover .emoji { transform: scale(1.15) rotate(-5deg); }
+
+/* Info */
+.info {
+  padding: 10px 12px 12px;
+}
+
+.name {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--text-white);
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+
+.desc {
+  font-size: 0.67rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.priceRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.priceBlock { display: flex; flex-direction: column; gap: 2px; }
+
+.price {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--orange);
+  line-height: 1;
+}
+
+.sym {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--orange-deep);
+}
+
+.originalPrice {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  text-decoration: line-through;
+}
+
+.sizeBadge {
+  display: inline-block;
+  font-size: 0.58rem;
+  color: var(--text-muted);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: var(--r-full);
+  padding: 2px 8px;
+  margin-top: 3px;
+}
+
+/* Add Button */
+.addBtn {
+  background: var(--orange);
+  border-radius: var(--r-sm);
+  padding: 0;
+  border: none;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: #000;
+  transition: all var(--t-fast) var(--ease-bounce);
+  box-shadow: 0 4px 12px rgba(245,146,42,0.4);
+  line-height: 1;
+}
+
+.addBtn:hover {
+  background: var(--orange-light);
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 0 6px 20px rgba(245,146,42,0.6);
+}
+
+.addedBtn {
+  background: var(--green) !important;
+  box-shadow: 0 4px 12px rgba(34,197,94,0.4) !important;
+  transform: scale(1.05) rotate(0deg) !important;
+}

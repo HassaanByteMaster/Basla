@@ -1,0 +1,157 @@
+.overlay {
+  position: fixed; inset: 0; z-index: 400;
+  background: rgba(0,0,0,0.82);
+  display: flex; align-items: flex-end;
+}
+
+.sheet {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  background: #141414;
+  border: 1.5px solid var(--border-mid);
+  border-bottom: none;
+  border-top: 3px solid var(--orange);
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+  padding-bottom: 28px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 -20px 60px rgba(0,0,0,0.6);
+}
+
+/* Shimmer on open — Design Spell */
+.sheetShimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 30%, rgba(245,146,42,0.07) 50%, transparent 70%);
+  animation: glint 0.8s 0.1s ease-out forwards;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.handle {
+  position: relative; z-index: 1;
+  width: 44px; height: 4px;
+  background: var(--border-mid);
+  border-radius: 99px;
+  margin: 14px auto 18px;
+}
+
+.header {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; gap: 14px;
+  padding: 0 20px 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+
+.iconWrap {
+  width: 52px; height: 52px;
+  border-radius: var(--r-md);
+  background: rgba(245,146,42,0.1);
+  border: 1.5px solid rgba(245,146,42,0.25);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.modalImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: calc(var(--r-md) - 1.5px);
+}
+
+.fallbackIcon {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.label {
+  font-size: 0.65rem; color: var(--text-muted);
+  font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase; margin-bottom: 4px;
+}
+
+.itemName {
+  font-size: 1.1rem; font-weight: 900;
+  color: var(--orange);
+}
+
+/* Options */
+.options {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 0 16px; margin-bottom: 14px;
+}
+
+.option {
+  display: flex; align-items: stretch; overflow: hidden;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: all var(--t-base) var(--ease-out);
+  font-family: var(--font);
+  position: relative;
+}
+
+.option::before {
+  content: '';
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 0;
+  background: var(--orange);
+  transition: width var(--t-base) var(--ease-out);
+  opacity: 0.1;
+}
+.option:hover::before { width: 100%; }
+.option:hover {
+  border-color: var(--orange);
+  transform: translateX(-3px);
+}
+
+.optionLeft {
+  flex: 1;
+  padding: 14px 16px;
+  text-align: right;
+}
+
+.optionName {
+  font-size: 0.98rem; font-weight: 800;
+  color: var(--text-white);
+}
+
+.optionRight {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--orange);
+  padding: 14px 16px;
+  min-width: 95px;
+  justify-content: center;
+  transition: background var(--t-fast);
+}
+.option:hover .optionRight { background: var(--orange-light); }
+
+.optionPrice {
+  font-size: 1.05rem; font-weight: 900;
+  color: #000;
+}
+.optionSym { font-size: 0.65rem; font-weight: 700; }
+
+.cancelBtn {
+  position: relative; z-index: 1;
+  display: block;
+  width: calc(100% - 32px); margin: 0 16px;
+  padding: 13px;
+  background: transparent;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+  color: var(--text-muted);
+  font-family: var(--font); font-size: 0.88rem; font-weight: 700;
+  cursor: pointer;
+  transition: all var(--t-fast) var(--ease-out);
+}
+.cancelBtn:hover { border-color: var(--red); color: var(--red); }

@@ -1,0 +1,67 @@
+.bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: var(--orange);
+  border-top: 2px solid var(--orange-light);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  box-shadow: 0 -6px 30px rgba(245,146,42,0.35);
+}
+
+.countWrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.countBadge {
+  width: 32px;
+  height: 32px;
+  background: rgba(0,0,0,0.3);
+  border-radius: var(--r-sm);
+  font-size: 0.9rem;
+  font-weight: 900;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.countLabel {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: rgba(0,0,0,0.8);
+}
+
+/* CTA button */
+.cta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #000;
+  border-radius: var(--r-sm);
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: all var(--t-fast) var(--ease-bounce);
+  border: none;
+  font-family: var(--font);
+}
+.cta:hover { background: #1a1a1a; transform: scale(1.02); }
+
+.ctaTotal {
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: var(--orange);
+}
+
+.ctaArrow {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #fff;
+}

@@ -1,0 +1,164 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #0A0A0A;
+  border-bottom: 2px solid var(--orange);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.6);
+  overflow: hidden;
+}
+
+/* Design Spell: Shimmer sweep across header on mount */
+.headerShimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(245,146,42,0.08) 50%,
+    transparent 70%
+  );
+  animation: glint 1.2s 0.3s ease-out forwards;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  max-width: 800px;
+  margin: 0 auto;
+  gap: 10px;
+}
+
+/* ── Brand ── */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  flex: 1;
+  min-width: 0;
+}
+
+.logoWrap {
+  width: 54px;
+  height: 54px;
+  flex-shrink: 0;
+  position: relative;
+  cursor: pointer;
+  filter: drop-shadow(0 4px 12px rgba(245,146,42,0.35));
+}
+
+.logoImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 1;
+}
+
+.brandText { min-width: 0; }
+
+.brandName {
+  font-size: 1.35rem;
+  font-weight: 900;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.bw { color: var(--text-white); }
+.bo {
+  color: var(--orange);
+  /* Text shimmer — Design Spell */
+  background: linear-gradient(90deg, #F5922A, #FFB055, #F5922A);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s 1s linear infinite;
+}
+
+.tagline {
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+}
+
+.hotline {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 3px;
+  color: var(--orange);
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+/* ── Table Badge ── */
+.tableBadge {
+  flex-shrink: 0;
+  background: var(--orange);
+  border-radius: var(--r-md);
+  padding: 7px 16px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(245,146,42,0.45), inset 0 1px 0 rgba(255,255,255,0.2);
+  cursor: default;
+  overflow: hidden;
+}
+
+/* Shine on table badge */
+.tableBadge::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Pulse ring — Design Spell */
+.pulseRing {
+  position: absolute;
+  inset: -3px;
+  border-radius: calc(var(--r-md) + 3px);
+  border: 2px solid var(--orange);
+  animation: pulseOrange 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.tableLabel {
+  display: block;
+  font-size: 0.52rem;
+  font-weight: 800;
+  color: rgba(0,0,0,0.65);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tableNum {
+  display: block;
+  font-size: 1.7rem;
+  font-weight: 900;
+  color: #000;
+  line-height: 1;
+}
+
+/* Orange glow bottom line */
+.glowLine {
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--orange), transparent);
+  filter: blur(2px);
+}

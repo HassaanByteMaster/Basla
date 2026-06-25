@@ -1,290 +1,117 @@
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap');
+/* ═══════════════════════════════════════════════════
+   BASLA EGYPT — Premium Design System
+   Orange × Black × Bold × Shiny × Street Food
+   ═══════════════════════════════════════════════════ */
 
-/* ========================
-   Design Tokens
-   ======================== */
 :root {
-  --primary: #F5890A;
-  --primary-dark: #C96D00;
-  --primary-light: #FFB347;
-  --primary-glow: rgba(245, 137, 10, 0.3);
-  --accent: #1A1A1A;
-  --bg: #0E0E0E;
-  --bg-2: #161616;
-  --bg-3: #1F1F1F;
-  --bg-card: rgba(26, 26, 26, 0.85);
-  --text: #FFFFFF;
-  --text-muted: #A0A0A0;
-  --text-dim: #6B6B6B;
-  --border: rgba(245, 137, 10, 0.15);
-  --border-hover: rgba(245, 137, 10, 0.4);
-  --radius: 16px;
-  --radius-sm: 8px;
-  --radius-lg: 24px;
-  --radius-xl: 32px;
-  --shadow: 0 8px 32px rgba(0,0,0,0.4);
-  --shadow-glow: 0 0 30px rgba(245, 137, 10, 0.2);
-  --font: 'Cairo', 'Tajawal', system-ui, sans-serif;
-  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --spring: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --orange:        #F5922A;
+  --orange-deep:   #D97A1A;
+  --orange-light:  #FFB055;
+  --orange-glow:   rgba(245, 146, 42, 0.4);
+  --orange-bg:     rgba(245, 146, 42, 0.1);
+  --orange-border: rgba(245, 146, 42, 0.3);
+
+  --bg-base:   #111111;
+  --bg-card:   #1A1A1A;
+  --bg-card2:  #222222;
+  --bg-dark:   #0A0A0A;
+  --bg-row:    #181818;
+
+  --text-white:  #FFFFFF;
+  --text-off:    rgba(255,255,255,0.88);
+  --text-muted:  rgba(255,255,255,0.42);
+  --text-dim:    rgba(255,255,255,0.2);
+
+  --border:        rgba(255,255,255,0.07);
+  --border-mid:    rgba(255,255,255,0.12);
+  --border-orange: rgba(245,146,42,0.35);
+
+  --green:  #22C55E;
+  --red:    #EF4444;
+
+  --r-xs:   5px;
+  --r-sm:   8px;
+  --r-md:   12px;
+  --r-lg:   18px;
+  --r-xl:   24px;
+  --r-full: 9999px;
+
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+  --t-fast: 0.15s;
+  --t-base: 0.28s;
+
+  --font: 'Cairo', sans-serif;
 }
 
-[data-theme="light"] {
-  --bg: #F5F0E8;
-  --bg-2: #EDE6D6;
-  --bg-3: #E0D5C0;
-  --bg-card: rgba(255, 248, 235, 0.92);
-  --text: #1A1A1A;
-  --text-muted: #5A5A5A;
-  --text-dim: #8A8A8A;
-  --border: rgba(245, 137, 10, 0.2);
-  --shadow: 0 8px 32px rgba(0,0,0,0.12);
-}
-
-/* ========================
-   Reset & Base
-   ======================== */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html {
+  font-size: 16px;
   scroll-behavior: smooth;
-  scrollbar-color: var(--primary) var(--bg-2);
-  scrollbar-width: thin;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
   font-family: var(--font);
-  background-color: var(--bg);
-  color: var(--text);
+  background-color: var(--bg-base);
+  color: var(--text-white);
   direction: rtl;
-  text-align: right;
-  line-height: 1.6;
-  min-height: 100vh;
+  min-height: 100dvh;
   overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
+  /* Basla brand topographic pattern — accurate to reference */
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg fill='none' stroke='rgba(255,255,255,0.035)' stroke-width='1.2'%3E%3Cpath d='M60 5 Q90 30 60 60 Q30 90 60 115'/%3E%3Cpath d='M30 0 Q60 25 30 55 Q0 85 30 115'/%3E%3Cpath d='M90 5 Q120 30 90 60 Q60 90 90 115'/%3E%3Cpath d='M15 10 Q40 35 15 60 Q-10 85 15 110'/%3E%3Cpath d='M105 10 Q130 35 105 60 Q80 85 105 110'/%3E%3Cpath d='M45 0 Q75 25 45 55 Q15 85 45 115'/%3E%3Cpath d='M75 0 Q105 25 75 55 Q45 85 75 115'/%3E%3C/g%3E%3Cg fill='none' stroke='rgba(255,255,255,0.02)' stroke-width='0.8'%3E%3Cpath d='M60 -15 Q90 10 60 40 Q30 70 60 100'/%3E%3Cpath d='M0 20 Q25 45 0 70 Q-25 95 0 120'/%3E%3Cpath d='M120 20 Q145 45 120 70 Q95 95 120 120'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 120px 120px;
 }
 
-/* ========================
-   Wavy Background Pattern (Basla Brand DNA)
-   ======================== */
-.wavy-bg {
+/* Orange ambient glow top */
+body::before {
+  content: '';
   position: fixed;
-  inset: 0;
-  z-index: 0;
+  top: 0; left: 0; right: 0;
+  height: 280px;
+  background: linear-gradient(180deg, rgba(245,146,42,0.07) 0%, transparent 100%);
   pointer-events: none;
-  opacity: 0.08;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cpath d='M0 50 Q 25 20, 50 50 T 100 50' stroke='%23F5890A' stroke-width='2' fill='none'/%3E%3Cpath d='M0 70 Q 25 40, 50 70 T 100 70' stroke='%23F5890A' stroke-width='2' fill='none'/%3E%3Cpath d='M0 30 Q 25 0, 50 30 T 100 30' stroke='%23F5890A' stroke-width='2' fill='none'/%3E%3Cpath d='M0 90 Q 25 60, 50 90 T 100 90' stroke='%23F5890A' stroke-width='2' fill='none'/%3E%3Cpath d='M0 10 Q 25 -20, 50 10 T 100 10' stroke='%23F5890A' stroke-width='2' fill='none'/%3E%3C/svg%3E");
-  background-size: 80px 80px;
+  z-index: 0;
 }
 
-/* ========================
-   App Layout
-   ======================== */
-#root {
-  position: relative;
-  z-index: 1;
-  min-height: 100vh;
+#root { position: relative; z-index: 1; }
+
+/* ── Animations ── */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
 }
 
-/* ========================
-   Typography
-   ======================== */
-h1, h2, h3, h4, h5 {
-  font-family: var(--font);
-  font-weight: 800;
-  line-height: 1.2;
+@keyframes pulseOrange {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245,146,42,0.4); }
+  50%       { box-shadow: 0 0 0 6px rgba(245,146,42,0); }
 }
 
-/* ========================
-   Buttons
-   ======================== */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px 24px;
-  border: none;
-  border-radius: var(--radius);
-  font-family: var(--font);
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: var(--transition);
-  text-decoration: none;
-  white-space: nowrap;
+@keyframes glint {
+  0%   { transform: translateX(-100%) skewX(-15deg); opacity: 0; }
+  50%  { opacity: 1; }
+  100% { transform: translateX(300%) skewX(-15deg); opacity: 0; }
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  color: white;
-  box-shadow: 0 4px 16px var(--primary-glow);
+@keyframes scanline {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
 }
 
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px var(--primary-glow);
-}
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 3px; height: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(245,146,42,0.5); border-radius: 99px; }
 
-.btn-primary:active {
-  transform: translateY(0);
-}
+/* ── Selection ── */
+::selection { background: rgba(245,146,42,0.3); color: #fff; }
 
-.btn-ghost {
-  background: transparent;
-  color: var(--text-muted);
-  border: 1px solid var(--border);
-}
-
-.btn-ghost:hover {
-  border-color: var(--primary);
-  color: var(--primary);
-  background: var(--primary-glow);
-}
-
-.btn-icon {
-  padding: 10px;
-  border-radius: 50%;
-  width: 44px;
-  height: 44px;
-  background: var(--bg-3);
-  color: var(--text-muted);
-  border: 1px solid var(--border);
-}
-
-.btn-icon:hover {
-  background: var(--primary-glow);
-  color: var(--primary);
-  border-color: var(--primary);
-}
-
-/* ========================
-   Cards & Glass
-   ======================== */
-.glass {
-  background: var(--bg-card);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border);
-}
-
-.card {
-  background: var(--bg-card);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  transition: var(--transition);
-}
-
-.card:hover {
-  border-color: var(--border-hover);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.3), var(--shadow-glow);
-  transform: translateY(-2px);
-}
-
-/* cat-badge base — override in App.css per component */
-.cat-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-weight: 900;
-  letter-spacing: 0.3px;
-}
-
-/* ========================
-   Animations
-   ======================== */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-24px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideInRight {
-  from { opacity: 0; transform: translateX(40px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-40px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.85); }
-  to   { opacity: 1; transform: scale(1); }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 10px var(--primary-glow); }
-  50%       { box-shadow: 0 0 30px var(--primary-glow), 0 0 60px rgba(245,137,10,0.1); }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-6px); }
-}
-
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-@keyframes count-bounce {
-  0%   { transform: scale(1); }
-  40%  { transform: scale(1.4); }
-  100% { transform: scale(1); }
-}
-
-.animate-in      { animation: fadeInUp 0.5s var(--spring) both; }
-.animate-down     { animation: fadeInDown 0.4s var(--spring) both; }
-.animate-right    { animation: slideInRight 0.4s var(--spring) both; }
-.animate-scale    { animation: scaleIn 0.35s var(--spring) both; }
-
-/* Stagger delays */
-.delay-1 { animation-delay: 0.05s; }
-.delay-2 { animation-delay: 0.10s; }
-.delay-3 { animation-delay: 0.15s; }
-.delay-4 { animation-delay: 0.20s; }
-.delay-5 { animation-delay: 0.25s; }
-.delay-6 { animation-delay: 0.30s; }
-
-/* ========================
-   Scrollbar
-   ======================== */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--bg-2); }
-::-webkit-scrollbar-thumb {
-  background: var(--primary);
-  border-radius: 2px;
-}
-
-/* ========================
-   Utilities
-   ======================== */
-.flex { display: flex; }
-.flex-center { display: flex; align-items: center; justify-content: center; }
-.gap-2 { gap: 8px; }
-.gap-3 { gap: 12px; }
-.gap-4 { gap: 16px; }
-
-.text-primary { color: var(--primary); }
-.text-muted   { color: var(--text-muted); }
-
-.w-full { width: 100%; }
-.h-full { height: 100%; }
-
-/* ========================
-   Responsive
-   ======================== */
-@media (max-width: 768px) {
-  .cat-badge { font-size: 1rem; padding: 6px 16px; }
-}
+/* ── Base ── */
+a { color: inherit; text-decoration: none; }
+button { font-family: var(--font); cursor: pointer; border: none; background: none; outline: none; }
+img { max-width: 100%; display: block; }
