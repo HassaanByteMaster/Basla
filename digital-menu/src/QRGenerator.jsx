@@ -176,25 +176,34 @@ export default function QRGenerator() {
             اختر نوع الباركود الذي ترغب في توليده. يمكنك توليد أكواد مخصصة لكل طاولة تتيح للعملاء الطلب مباشرة، أو كود عام للمنيو يعرض الوجبات فقط للقراءة.
           </p>
           
-          <div className="qr-form">
+          <div className="qr-form" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px' }}>
+            {/* Row 1: Mode Select */}
             <div className="qr-field">
-              <label>نوع الباركود:</label>
-              <div style={{ display: 'flex', gap: '10px', marginTop: '5px' }}>
+              <label style={{ marginBottom: '6px', fontWeight: '800' }}>نوع الباركود:</label>
+              <div style={{
+                display: 'inline-flex',
+                background: 'rgba(0, 0, 0, 0.35)',
+                padding: '4px',
+                borderRadius: '14px',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                width: '100%',
+                maxWidth: '480px'
+              }}>
                 <button
                   type="button"
                   style={{
                     flex: 1,
-                    padding: '10px 12px',
-                    borderRadius: '12px',
-                    border: '1px solid',
-                    borderColor: genMode === 'tables' ? 'var(--primary, #F5890A)' : 'rgba(255,255,255,0.08)',
-                    background: genMode === 'tables' ? 'rgba(245, 137, 10, 0.12)' : 'rgba(0,0,0,0.2)',
-                    color: genMode === 'tables' ? 'var(--primary, #F5890A)' : '#aaa',
+                    padding: '10px 16px',
+                    borderRadius: '10px',
+                    border: 'none',
+                    background: genMode === 'tables' ? 'var(--primary, #F5890A)' : 'transparent',
+                    color: genMode === 'tables' ? '#fff' : 'var(--text-muted, #9ca3af)',
                     fontFamily: 'inherit',
-                    fontSize: '0.85rem',
-                    fontWeight: '700',
+                    fontSize: '0.88rem',
+                    fontWeight: '800',
                     cursor: 'pointer',
-                    transition: 'all 0.2s ease'
+                    transition: 'all 0.25s ease',
+                    boxShadow: genMode === 'tables' ? '0 4px 12px rgba(245, 137, 10, 0.25)' : 'none'
                   }}
                   onClick={() => setGenMode('tables')}
                 >
@@ -204,17 +213,17 @@ export default function QRGenerator() {
                   type="button"
                   style={{
                     flex: 1,
-                    padding: '10px 12px',
-                    borderRadius: '12px',
-                    border: '1px solid',
-                    borderColor: genMode === 'general' ? 'var(--primary, #F5890A)' : 'rgba(255,255,255,0.08)',
-                    background: genMode === 'general' ? 'rgba(245, 137, 10, 0.12)' : 'rgba(0,0,0,0.2)',
-                    color: genMode === 'general' ? 'var(--primary, #F5890A)' : '#aaa',
+                    padding: '10px 16px',
+                    borderRadius: '10px',
+                    border: 'none',
+                    background: genMode === 'general' ? 'var(--primary, #F5890A)' : 'transparent',
+                    color: genMode === 'general' ? '#fff' : 'var(--text-muted, #9ca3af)',
                     fontFamily: 'inherit',
-                    fontSize: '0.85rem',
-                    fontWeight: '700',
+                    fontSize: '0.88rem',
+                    fontWeight: '800',
                     cursor: 'pointer',
-                    transition: 'all 0.2s ease'
+                    transition: 'all 0.25s ease',
+                    boxShadow: genMode === 'general' ? '0 4px 12px rgba(245, 137, 10, 0.25)' : 'none'
                   }}
                   onClick={() => setGenMode('general')}
                 >
@@ -222,49 +231,63 @@ export default function QRGenerator() {
                 </button>
               </div>
             </div>
-
-            {genMode === 'tables' && (
+ 
+            {/* Row 2: Inputs Grid */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: genMode === 'tables' ? 'repeat(auto-fit, minmax(200px, 1fr))' : '1fr',
+              gap: '20px',
+              width: '100%'
+            }}>
+              {genMode === 'tables' && (
+                <div className="qr-field">
+                  <label htmlFor="table-input">عدد الطاولات:</label>
+                  <input 
+                    id="table-input"
+                    type="number" 
+                    min="1" 
+                    max="100" 
+                    value={tableCount} 
+                    onChange={(e) => setTableCount(Math.max(1, parseInt(e.target.value) || 1))}
+                    style={{ textAlign: 'center' }}
+                  />
+                </div>
+              )}
+              
               <div className="qr-field">
-                <label htmlFor="table-input">عدد الطاولات:</label>
+                <label htmlFor="url-input">رابط المنيو الأساسي:</label>
                 <input 
-                  id="table-input"
-                  type="number" 
-                  min="1" 
-                  max="100" 
-                  value={tableCount} 
-                  onChange={(e) => setTableCount(Math.max(1, parseInt(e.target.value) || 1))}
+                  id="url-input"
+                  type="text" 
+                  value={baseUrl} 
+                  onChange={(e) => setBaseUrl(e.target.value)}
+                  placeholder="https://basla.egypt/"
+                  style={{ direction: 'ltr', textAlign: 'left' }}
                 />
               </div>
-            )}
-            
-            <div className="qr-field">
-              <label htmlFor="url-input">رابط المنيو الأساسي:</label>
-              <input 
-                id="url-input"
-                type="text" 
-                value={baseUrl} 
-                onChange={(e) => setBaseUrl(e.target.value)}
-                placeholder="https://basla.egypt/"
-              />
             </div>
-
-            <button 
-              className="print-all-btn" 
-              onClick={handleDownloadPDF}
-              disabled={isDownloading}
-            >
-              {isDownloading ? (
-                <>
-                  <Loader2 size={18} className="spin" />
-                  <span>جاري تصدير الـ PDF...</span>
-                </>
-              ) : (
-                <>
-                  <Download size={18} />
-                  <span>تحميل كروت الـ PDF</span>
-                </>
-              )}
-            </button>
+ 
+            {/* Row 3: Action Button */}
+            <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '5px' }}>
+              <button 
+                className="print-all-btn" 
+                onClick={handleDownloadPDF}
+                disabled={isDownloading}
+                style={{ width: '100%', maxWidth: '320px' }}
+              >
+                {isDownloading ? (
+                  <>
+                    <Loader2 size={18} className="spin" />
+                    <span>جاري تصدير الـ PDF...</span>
+                  </>
+                ) : (
+                  <>
+                    <Download size={18} />
+                    <span>تحميل كروت الـ PDF</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </section>
 
