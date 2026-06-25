@@ -324,8 +324,7 @@ export default function QRGenerator() {
 
                 {/* Table Label */}
                 <div className="qr-card__table-num">
-                  <span>المنيو الإلكتروني</span>
-                  <strong style={{ fontSize: '1.25rem' }}>عرض فقط</strong>
+                  <strong style={{ fontSize: '1.25rem' }}>Scan Now!</strong>
                 </div>
 
                 {/* Call to Action */}
