@@ -21,6 +21,7 @@ const loadHtml2Pdf = () => {
 export default function QRGenerator() {
   const [tableCount, setTableCount] = useState(12);
   const [baseUrl, setBaseUrl] = useState('');
+  const [qrType, setQrType] = useState('tables'); // 'tables' or 'general'
   
   // PDF download loading state
   const [isDownloading, setIsDownloading] = useState(false);
@@ -92,7 +93,7 @@ export default function QRGenerator() {
   };
 
   const getQRUrl = (tableNum) => {
-    const url = `${baseUrl}?table=${tableNum}`;
+    const url = qrType === 'general' ? baseUrl : `${baseUrl}?table=${tableNum}`;
     const qrColor = (BRAND_CONFIG.primaryColor || '#F5890A').replace('#', '');
     return `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(url)}&color=${qrColor}&bgcolor=ffffff&qzone=1`;
   };
@@ -168,24 +169,49 @@ export default function QRGenerator() {
         <section className="qr-controls no-print animate-scale">
           <div className="qr-controls__title">
             <Layers className="icon-orange" size={22} />
-            <h2>توليد أكواد الطاولات لـ {BRAND_CONFIG.name}</h2>
+            <h2>توليد أكواد QR لـ {BRAND_CONFIG.name}</h2>
           </div>
           <p className="qr-controls__desc">
-            أدخل عدد الطاولات في مطعمك لتوليد بطاقات الرمز السريع (QR Codes) المخصصة لكل طاولة. يمكنك تحميل البطاقات كملف PDF ملون عالي الجودة للطباعة فوراً.
+            اختر نوع الكود الذي تريد توليده (أكواد مخصصة للطاولات أو كود عام للمنيو بدون طاولة) ثم حمّل الكروت كملف PDF ملون عالي الجودة للطباعة فوراً.
           </p>
           
           <div className="qr-form">
             <div className="qr-field">
-              <label htmlFor="table-input">عدد الطاولات:</label>
-              <input 
-                id="table-input"
-                type="number" 
-                min="1" 
-                max="100" 
-                value={tableCount} 
-                onChange={(e) => setTableCount(Math.max(1, parseInt(e.target.value) || 1))}
-              />
+              <label htmlFor="type-select">نوع الكود:</label>
+              <select
+                id="type-select"
+                value={qrType}
+                onChange={(e) => setQrType(e.target.value)}
+                style={{
+                  padding: '12px 16px',
+                  background: 'rgba(0, 0, 0, 0.25)',
+                  border: '1px solid var(--border, rgba(255, 255, 255, 0.08))',
+                  borderRadius: '12px',
+                  color: '#fff',
+                  fontFamily: 'inherit',
+                  fontSize: '0.95rem',
+                  outline: 'none',
+                  cursor: 'pointer',
+                }}
+              >
+                <option value="tables" style={{ background: '#111' }}>أكواد الطاولات</option>
+                <option value="general" style={{ background: '#111' }}>كود عام للمنيو (بدون طاولة)</option>
+              </select>
             </div>
+
+            {qrType === 'tables' && (
+              <div className="qr-field">
+                <label htmlFor="table-input">عدد الطاولات:</label>
+                <input 
+                  id="table-input"
+                  type="number" 
+                  min="1" 
+                  max="100" 
+                  value={tableCount} 
+                  onChange={(e) => setTableCount(Math.max(1, parseInt(e.target.value) || 1))}
+                />
+              </div>
+            )}
             
             <div className="qr-field">
               <label htmlFor="url-input">رابط المنيو الأساسي:</label>
@@ -220,7 +246,7 @@ export default function QRGenerator() {
 
         {/* Printable Grid */}
         <section className="qr-grid">
-          {Array.from({ length: isNaN(tableCount) ? 12 : Math.max(1, tableCount) }, (_, idx) => {
+          {Array.from({ length: qrType === 'general' ? 1 : (isNaN(tableCount) ? 12 : Math.max(1, tableCount)) }, (_, idx) => {
             const tableNum = idx + 1;
             
             return (
@@ -246,22 +272,32 @@ export default function QRGenerator() {
                   <div className="qr-card__code-wrap">
                     <img 
                       src={getQRUrl(tableNum)} 
-                      alt={`Table ${tableNum} QR Code`} 
+                      alt={qrType === 'general' ? "General QR Code" : `Table ${tableNum} QR Code`} 
                       className="qr-card__code-img"
                       loading="lazy"
                     />
                   </div>
 
-                  {/* Table Label */}
-                  <div className="qr-card__table-num">
-                    <span>طاولة رقم</span>
-                    <strong>{tableNum}</strong>
-                  </div>
+                  {/* Table / General Label */}
+                  {qrType === 'tables' ? (
+                    <div className="qr-card__table-num">
+                      <span>طاولة رقم</span>
+                      <strong>{tableNum}</strong>
+                    </div>
+                  ) : (
+                    <div className="qr-card__table-num" style={{ background: 'linear-gradient(135deg, #1A1A1A, #333333)', border: '1.5px solid #E5BA73', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>
+                      <span style={{ fontSize: '0.85rem', fontWeight: '800', color: '#E5BA73' }}>المنيو الرقمي العام</span>
+                    </div>
+                  )}
 
                   {/* Call to Action */}
                   <div className="qr-card__footer">
                     <h4 className="qr-card__welcome">أهلاً بك في {BRAND_CONFIG.name}</h4>
-                    <p className="qr-card__instruction">تفضّل بمسح الرمز السريع لتصفح قائمة المأكولات وطلب وجبتك المفضلة مباشرة من طاولتك</p>
+                    <p className="qr-card__instruction">
+                      {qrType === 'general' 
+                        ? 'تفضّل بمسح الرمز السريع لتصفح قائمة المأكولات والطلبات مباشرة من هاتفك' 
+                        : 'تفضّل بمسح الرمز السريع لتصفح قائمة المأكولات وطلب وجبتك المفضلة مباشرة من طاولتك'}
+                    </p>
                     <div className="qr-card__deco-line">✦ ✦ ✦</div>
                   </div>
                 </div>
